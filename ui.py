@@ -133,10 +133,10 @@ else:
     print("config.json is missing")
     sys.exit()
 
-if (USESTATUSBAR):
+if USESTATUSBAR:
     STATUSSTRINGS = ['-', '\\', '|', '/', '-']
 
-if (EXECPATH):
+if EXECPATH:
     utils.addExecPath(EXECPATH)
 
 if HIDE_CONSOLE:  # 隐藏控制台
@@ -150,7 +150,7 @@ root = style.master
 width = 1240
 height = 480
 
-if (ALLOWMODIFYCMD):
+if ALLOWMODIFYCMD:
     height += 40
 if USESTATUSBAR:
     height += 80
@@ -173,12 +173,12 @@ WorkDir = False
 filename = tk.StringVar()
 directoryname = tk.StringVar()
 inputvar = tk.StringVar()
-if (ALLOWMODIFYCMD):
+if ALLOWMODIFYCMD:
     USERCMD = tk.StringVar()
 
 
 # from https://www.i4k.xyz/article/weixin_49317370/108878373
-class myStdout():  # 重定向类
+class myStdout:  # 重定向类
     def __init__(self):
         # 将其备份
         self.stdoutbak = sys.stdout
@@ -192,12 +192,12 @@ class myStdout():  # 重定向类
         # text.insert('end', info)	# 在多行文本控件最后一行插入print信息
         # text.update()	# 更新显示的文本，不加这句插入的信息无法显示
         # text.see(tkinter.END)	# 始终显示最后一行，不加这句，当文本溢出控件最后一行时，不会自动显示最后一行
-        if (TEXTREADONLY):
+        if TEXTREADONLY:
             text.configure(state='normal')
         text.insert(END, "[%s]" % (utils.get_time()) + "%s" % (info))
         text.update()  # 实时返回信息
         text.yview('end')
-        if (TEXTREADONLY):
+        if TEXTREADONLY:
             text.configure(state='disable')
 
     def restoreStd(self):
@@ -225,12 +225,13 @@ def logo():
     root.iconbitmap(LOGOICO)
 
 
-if (USEMYLOGO):
+if USEMYLOGO:
     logo()
 
 
 def VisitMe():
-    webbrowser.open("https://github.com/affggh")
+    webbrowser.open("https://github.com/affggh/")
+    webbrowser.open("https://github.com/ColdWindScholar/")
 
 
 def showinfo(textmsg):
