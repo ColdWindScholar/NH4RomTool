@@ -235,22 +235,22 @@ def VisitMe():
 
 
 def showinfo(textmsg):
-    if (TEXTREADONLY):
+    if TEXTREADONLY:
         text.configure(state='normal')
-    text.insert(END, "[%s]" % (utils.get_time()) + "%s" % (textmsg) + "\n")
+    text.insert(END, "[%s]" % (utils.get_time()) + "%s" % textmsg + "\n")
     text.update()  # 实时返回信息
     text.yview('end')
-    if (TEXTREADONLY):
+    if TEXTREADONLY:
         text.configure(state='disable')
 
 
 def showontime(textmsg):
-    if (TEXTREADONLY):
+    if TEXTREADONLY:
         text.configure(state='normal')
     # text.delete(1.0, END)
-    text.insert(END, "[%s]" % (utils.get_time()) + "%s" % (textmsg) + "\n")
+    text.insert(END, "[%s]" % (utils.get_time()) + "%s" % textmsg + "\n")
     text.update()  # 实时返回信息
-    if (TEXTREADONLY):
+    if TEXTREADONLY:
         text.configure(state='disable')
 
 
@@ -285,26 +285,26 @@ def runontime(cmd):
 def returnoutput(cmd):
     try:
         ret = subprocess.check_output(cmd, shell=False, stderr=subprocess.STDOUT)
-        return (ret.decode())
+        return ret.decode()
     except subprocess.CalledProcessError as e:
-        return (e.decode())
+        return e.decode()
 
 
 def showbanner():
-    if (TEXTSHOWBANNER):
+    if TEXTSHOWBANNER:
         with open(BANNER, "r") as b:
             for i in b.readlines():
                 showinfo(i.replace('\n', ''))
 
 
 def cleaninfo():
-    if (TEXTREADONLY):
+    if TEXTREADONLY:
         text.configure(state='normal')
     text.delete(1.0, END)  # 清空text
     # text.image_create(END,image=LOGOIMG)
     # text.insert(END,"\n")
     showbanner()
-    if (TEXTREADONLY):
+    if TEXTREADONLY:
         text.configure(state='disable')
 
 
@@ -323,7 +323,7 @@ def selectDir():
 def about():
     root2 = tk.Toplevel()
     curWidth = 300
-    curHight = 180
+    curHight = 300
     # 获取屏幕宽度和高度
     scn_w, scn_h = root.maxsize()
     # print(scn_w, scn_h)
@@ -353,7 +353,6 @@ def about():
 
     imgLabe2 = ttk.Label(aframe2, image=LOGOIMG)  # 把图片整合到标签类中
     imgLabe2.pack(side=TOP, expand=YES, pady=3)
-    root2.mainloop()
 
 
 def userInputWindow(title='输入文本'):
@@ -437,11 +436,10 @@ def dirChooseWindow(tips):
 
 
 def change_theme(var):
-    if (DEBUG):
+    if DEBUG:
         print("change Theme : " + var)
     showinfo("设置主题为 : " + var)
-    style = Style(theme=var)
-    style.theme_use()
+    Style(theme=var).theme_use()
 
 
 def getWorkDir():
@@ -454,7 +452,7 @@ def getWorkDir():
 
 
 def clearWorkDir():
-    if not (WorkDir):
+    if not WorkDir:
         showinfo("当前未选择任何目录")
     else:
         showinfo("将清理: " + WorkDir)
@@ -477,7 +475,7 @@ def removeDir_EX(workDirEX):
 
 
 def statusend():
-    if (USESTATUSBAR):
+    if USESTATUSBAR:
         global STATUSON
         STATUSON = True
         statusthread.join()
@@ -487,7 +485,7 @@ def statusend():
 
 
 def __statusstart():
-    while (True):
+    while True:
         # for i in range(len(STATUSSTRINGS)):
         for i in range(33):  # 33是图片帧数
             # statusbar['text'] = STATUSSTRINGS[i]
@@ -495,12 +493,12 @@ def __statusstart():
             statusbar['image'] = photo
             time.sleep(1 / 18)
             global STATUSON
-        if (STATUSON):
+        if STATUSON:
             break
 
 
 def statusstart():
-    if (USESTATUSBAR):
+    if USESTATUSBAR:
         global STATUSON
         STATUSON = False
         global statusthread
@@ -514,14 +512,14 @@ def SelectWorkDir():
     item_text = ['']
     for item in table.selection():
         item_text = table.item(item, "values")
-    if (item_text[0] != ""):
+    if item_text[0] != "":
         global WorkDir
         WorkDir = item_text[0]
-        showinfo("选择工作目录为: %s" % (WorkDir))
+        showinfo("选择工作目录为: %s" % WorkDir)
 
 
 def ConfirmWorkDir():
-    if not (WorkDir):
+    if not WorkDir:
         showinfo("Warning : 请选择一个目录")
     else:
         tabControl.select(tab2)
@@ -532,8 +530,8 @@ def tableClicked(event):
 
 
 def rmWorkDir():
-    if (WorkDir):
-        showinfo("删除目录: %s" % (WorkDir))
+    if WorkDir:
+        showinfo("删除目录: %s" % WorkDir)
         shutil.rmtree(WorkDir)
     else:
         showinfo("Error : 要删除的文件夹不存在")
@@ -549,7 +547,7 @@ def mkWorkdir():
 
 def detectFileType():
     fileChooseWindow("检测文件类型")
-    if (os.access(filename.get(), os.F_OK)):
+    if os.access(filename.get(), os.F_OK):
         showinfo("文件格式为 : ")
         runcmd("gettype -i %s" % (filename.get()))
     else:
@@ -558,7 +556,7 @@ def detectFileType():
 
 def ozipDecrypt():
     fileChooseWindow("解密ozip")
-    if (os.access(filename.get(), os.F_OK)):
+    if os.access(filename.get(), os.F_OK):
         ozip_decrypt.main("%s" % (filename.get()))
     else:
         showinfo("Error : 文件不存在")
@@ -566,7 +564,7 @@ def ozipDecrypt():
 
 def __ozipEncrypt():
     fileChooseWindow("加密ozip")
-    if (os.access(filename.get(), os.F_OK)):
+    if os.access(filename.get(), os.F_OK):
         statusstart()
         runcmd("zip2ozip " + filename.get())
         statusend()
@@ -652,9 +650,9 @@ def getMiuiWindow():
 
 
 def __unzipfile():
-    if (WorkDir):
+    if WorkDir:
         fileChooseWindow("选择要解压的文件")
-        if (os.access(filename.get(), os.F_OK)):
+        if os.access(filename.get(), os.F_OK):
             showinfo("正在解压文件: " + filename.get())
             statusstart()
             MyThread(utils.unzip_file(filename.get(), WorkDir + "\\rom"))
@@ -667,8 +665,8 @@ def __unzipfile():
 
 
 def unzipfile():
-    if (WorkDir):
-        if (os.access(WorkDir + "\\rom", os.F_OK)):
+    if WorkDir:
+        if os.access(WorkDir + "\\rom", os.F_OK):
             shutil.rmtree(WorkDir + "\\rom")
     threading.Thread(target=__unzipfile).start()
 
@@ -676,7 +674,7 @@ def unzipfile():
 def __zipcompressfile():
     showinfo("输入生成的文件名")
     userInputWindow()
-    if (WorkDir):
+    if WorkDir:
         showinfo("正在压缩 : " + inputvar.get() + ".zip")
         statusstart()
         MyThread(utils.zip_file(inputvar.get() + ".zip", WorkDir + "\\rom"))
@@ -923,7 +921,7 @@ def repackboot():
 
 
 def __repackextimage():
-    if (WorkDir):
+    if WorkDir:
         dirChooseWindow("选择你要打包的目录 例如 : .\\NH4_test\\vendor\\vendor")
         # Audo choose fs_config
         showinfo("自动搜寻 fs_config")
@@ -939,7 +937,7 @@ def __repackextimage():
             showinfo("自动搜寻 fs_config 失败，请手动选择")
             fileChooseWindow("选择你要打包目录的fs_config文件")
             fsconfig_path = filename.get()
-        if (os.path.isdir(directoryname.get())):
+        if os.path.isdir(directoryname.get()):
             showinfo("修补fs_config文件")
             fspatch.main(directoryname.get(), fsconfig_path)
             # Thanks DXY provid info
@@ -948,7 +946,7 @@ def __repackextimage():
                 MUTIIMGSIZE = 1.2
             else:
                 MUTIIMGSIZE = 1.07
-            if (UICONFIG['AUTOMUTIIMGSIZE']):
+            if UICONFIG['AUTOMUTIIMGSIZE']:
                 EXTIMGSIZE = int(utils.getdirsize(directoryname.get()) * MUTIIMGSIZE)
             else:
                 EXTIMGSIZE = UICONFIG['MODIFIEDIMGSIZE']
@@ -1054,11 +1052,11 @@ def repackDTBO():
 
 
 def __repackSparseImage():
-    if (WorkDir):
+    if WorkDir:
         # 只将 EXT 转为 SIMG 而不是重新打包一次
         fileChooseWindow("选择要转换为 SIMG 的 IMG 文件")
         imgFilePath = filename.get()
-        if (os.path.exists(imgFilePath) == False):
+        if os.path.exists(imgFilePath) == False:
             showinfo("文件不存在: " + imgFilePath)
         elif returnoutput("gettype -i " + imgFilePath).replace('\r\n', '') != "ext":
             showinfo("选中的文件并非 EXT 镜像，请先转换")
@@ -1089,7 +1087,7 @@ def __compressToBr():
     if WorkDir:
         fileChooseWindow("选择要转换为 BR 的 DAT 文件")
         imgFilePath = filename.get()
-        if (os.path.exists(imgFilePath) == False):
+        if os.path.exists(imgFilePath) == False:
             showinfo("文件不存在: " + imgFilePath)
         elif returnoutput("gettype -i " + imgFilePath).replace('\r\n', '') != "dat":
             showinfo("选中的文件并非 DAT，请先转换")
@@ -1116,7 +1114,7 @@ def __repackDat():
         # TO-DO: 自动识别Android版本   20220331
         fileChooseWindow("选择要转换为 DAT 的 IMG 文件")
         imgFilePath = filename.get()
-        if (os.path.exists(imgFilePath) == False):
+        if os.path.exists(imgFilePath) == False:
             showinfo("文件不存在: " + imgFilePath)
         elif returnoutput("gettype -i " + imgFilePath).replace('\r\n', '') != "sparse":
             showinfo("选中的文件并非 SPARSE，请先转换")
@@ -1253,7 +1251,7 @@ def Test():
 
 if __name__ == '__main__':
 
-    if (USEMYSTD):
+    if USEMYSTD:
         mystd = myStdout()
     else:
         # mystd.restoreStd()
@@ -1265,7 +1263,7 @@ if __name__ == '__main__':
     y = int((screenheight - height) / 2)
     root.geometry('{}x{}+{}+{}'.format(width, height, x, y))  # 大小以及位置
 
-    if (MENUBAR):  # 菜单栏
+    if MENUBAR:  # 菜单栏
         menuBar = tk.Menu(root)
         root.config(menu=menuBar)
         menu1 = tk.Menu(menuBar, tearoff=False)
@@ -1445,7 +1443,7 @@ if __name__ == '__main__':
     text = scrolledtext.ScrolledText(frame2, width=180, height=18, font=TEXTFONT, relief=SOLID)  # 信息展示 文本框
     text.pack(side=TOP, expand=YES, fill=BOTH, padx=4, pady=2)
     # table.bind('<ButtonPress-1>', showinfo("请点击确认目录"))
-    if (ALLOWMODIFYCMD):
+    if ALLOWMODIFYCMD:
         frame22 = ttk.LabelFrame(frame2, text="输入自定义命令", labelanchor="nw", relief=SUNKEN, borderwidth=1)
         usercmd = ttk.Entry(frame22, textvariable=USERCMD, width=25)
         usercmd.pack(side=LEFT, expand=YES, fill=X, padx=2, pady=2)
@@ -1456,7 +1454,7 @@ if __name__ == '__main__':
     frame.pack(side=TOP, expand=YES, fill=BOTH, padx=2, pady=2)
     frame1.pack(side=LEFT, expand=YES, fill=BOTH, padx=5, pady=2)
     frame2.pack(side=LEFT, expand=YES, fill=BOTH, padx=5, pady=2)
-    if (ALLOWMODIFYCMD):
+    if ALLOWMODIFYCMD:
         frame22.pack(side=TOP, expand=NO, fill=BOTH, padx=5, pady=2)
 
     # bottom labels
@@ -1464,12 +1462,12 @@ if __name__ == '__main__':
     ttk.Button(framebotm, text='清理信息', command=cleaninfo, style='secondary.TButton').pack(side=RIGHT, expand=NO,
                                                                                               padx=5, pady=0)
     # Status bar
-    if (USESTATUSBAR):
+    if USESTATUSBAR:
         statusbar = ttk.Label(framebotm, relief='flat', anchor=tk.E, bootstyle="info")
         statusbar.pack(side=RIGHT, fill=tk.X, ipadx=12)
         statusbar['image'] = DEFAULTSTATUS
     # shiju
-    if (SHOWSHIJU):
+    if SHOWSHIJU:
         shiju = utils.getShiju()
         shiju_font = ('微软雅黑', 12)
         shijuLable = ttk.Label(framebotm, text="%s —— %s  《%s》" % (shiju['content'], shiju['author'], shiju['origin']),
@@ -1477,10 +1475,10 @@ if __name__ == '__main__':
         shijuLable.pack(side=LEFT, padx=8)
     framebotm.pack(side=BOTTOM, expand=NO, fill=X, padx=8, pady=12)
 
-    if (TEXTSHOWBANNER):
+    if TEXTSHOWBANNER:
         showbanner()
 
-    if (DEBUG):
+    if DEBUG:
         showinfo("Debug 模式已开启")
         # showinfo("Board id : " + sn.get_board_id())
         # showinfo(UICONFIG)
@@ -1494,5 +1492,5 @@ if __name__ == '__main__':
     root.update()
     root.mainloop()
 
-    if (USEMYSTD):
+    if USEMYSTD:
         mystd.restoreStd()  # 还原标准输出
