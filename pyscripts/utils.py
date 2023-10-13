@@ -203,7 +203,7 @@ def getShiju():
 def getOnlineVersion():
     bypass_systemProxy = {"http": None,
                           "https": None}
-    url = "https://ghproxy.com/https://raw.githubusercontent.com/affggh/NH4RomTool/master/version.txt"
+    url = "https://ghproxy.com/https://raw.githubusercontent.com/ColdWindScholar/NH4RomTool/master/version.txt"
     r = requests.get(url, proxies=bypass_systemProxy)
     return r.text
 
