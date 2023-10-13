@@ -4,7 +4,7 @@
 Free Rom Unpack and Repack tool on windows !!! 
 
 ## LOGO
-![image](https://raw.githubusercontent.com/ColdWindScholar/NH4RomTool/master/bin/logo.png)
+![image](https://ghproxy.com/https://raw.githubusercontent.com/ColdWindScholar/NH4RomTool/master/bin/logo.png)
 
 ## 目前实现的
 ***解压压缩***    
