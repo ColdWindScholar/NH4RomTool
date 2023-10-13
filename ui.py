@@ -113,7 +113,7 @@ if VERIFYPROG:
 
 # Var
 VERSION = utils.getCurrentVersion()
-AUTHOR = "affggh"
+AUTHOR = "affggh&ColdWindScholar"
 WINDOWTITLE = "NH4RomTool " + " [版本: " + VERSION + "] [作者: " + AUTHOR + "]"
 THEME = "minty"  # 设置默认主题
 LOGOICO = ".\\bin\\logo.ico"
