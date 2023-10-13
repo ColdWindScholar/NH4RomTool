@@ -698,7 +698,7 @@ def __xruncmd(event):
 # Parse Payload.bin add by azwhikaru 20220319
 def __parsePayload():
     fileChooseWindow("解析payload.bin")
-    if (os.access(filename.get(), os.F_OK)):
+    if os.access(filename.get(), os.F_OK):
         statusstart()
         data = returnoutput("bin/parsePayload.exe " + filename.get())
         datadict = dict(json.loads(data.replace("\'", "\"")))
@@ -720,16 +720,16 @@ def parsePayload():
 
 def patchvbmeta():
     fileChooseWindow("选择vbmeta文件")
-    if (os.access(filename.get(), os.F_OK)):
-        if (vbpatch.checkMagic(filename.get())):
+    if os.access(filename.get(), os.F_OK):
+        if vbpatch.checkMagic(filename.get()):
             flag = vbpatch.readVerifyFlag(filename.get())
-            if (flag == 0):
+            if flag == 0:
                 showinfo("检测到AVB为打开状态，正在关闭...")
                 vbpatch.disableAVB(filename.get())
-            elif (flag == 1):
+            elif flag == 1:
                 showinfo("检测到仅关闭了DM校验，正在关闭AVB...")
                 vbpatch.disableAVB(filename.get())
-            elif (flag == 2):
+            elif flag == 2:
                 showinfo("检测AVB校验已关闭，正在开启...")
                 vbpatch.restore(filename.get())
             else:
@@ -755,8 +755,8 @@ def xruncmd():
 
 def __smartUnpack():
     fileChooseWindow("选择要智能解包的文件")
-    if (WorkDir):
-        if (os.access(filename.get(), os.F_OK)):
+    if WorkDir:
+        if os.access(filename.get(), os.F_OK):
             filetype = returnoutput("gettype -i " + filename.get()).replace('\r\n', '')
             # for windows , end of line basicly is \x0a\x0d which is \r\n
             showinfo("智能识别文件类型为 :  " + filetype)
