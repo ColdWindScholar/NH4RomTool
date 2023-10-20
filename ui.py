@@ -25,8 +25,6 @@ import threading
 import time
 import webbrowser
 
-# add pyscripts into sys path
-sys.path.append(os.path.abspath(os.path.dirname(sys.argv[0])) + "\\pyscripts")
 # import functions I modified
 import utils
 import sn
@@ -50,7 +48,7 @@ USEMYSTD = False  # 输出重定向到Text控件
 SHOWSHIJU = False  # 展示诗句
 USESTATUSBAR = True  # 使用状态栏（并不好用）
 VERIFYPROG = False  # 程序验证（本来打算恰烂钱的）
-ALLOWMODIFYCMD = True  # 提供一个可以输入任意命令的框
+ALLOWMODIFYCMD = 1  # 提供一个可以输入任意命令的框
 EXECPATH = ".\\bin"  # 临时添加可执行程序目录到系统变量
 LICENSE = "Apache 2.0"  # 程序的开源协议
 
@@ -194,7 +192,7 @@ class myStdout:  # 重定向类
         # text.see(tkinter.END)	# 始终显示最后一行，不加这句，当文本溢出控件最后一行时，不会自动显示最后一行
         if TEXTREADONLY:
             text.configure(state='normal')
-        text.insert(END, "[%s]" % (utils.get_time()) + "%s" % (info))
+        text.insert(END, "[%s]" % (utils.get_time()) + "%s" % info)
         text.update()  # 实时返回信息
         text.yview('end')
         if TEXTREADONLY:
@@ -206,18 +204,8 @@ class myStdout:  # 重定向类
         sys.stderr = self.stderrbak
 
 
-class MyThread(threading.Thread):
-    def __init__(self, func, *args):
-        super().__init__()
-
-        self.func = func
-        self.args = args
-
-        self.setDaemon(True)
-        self.start()  # 在这里开始
-
-    def run(self):
-        self.func(*self.args)
+def my_thread(func, *args):
+    threading.Thread(target=func, args=args, daemon=True).start()
 
 
 def logo():
@@ -655,7 +643,7 @@ def __unzipfile():
         if os.access(filename.get(), os.F_OK):
             showinfo("正在解压文件: " + filename.get())
             statusstart()
-            MyThread(utils.unzip_file(filename.get(), WorkDir + "\\rom"))
+            my_thread(utils.unzip_file(filename.get(), WorkDir + "\\rom"))
             statusend()
             showinfo("解压完成")
         else:
@@ -677,7 +665,7 @@ def __zipcompressfile():
     if WorkDir:
         showinfo("正在压缩 : " + inputvar.get() + ".zip")
         statusstart()
-        MyThread(utils.zip_file(inputvar.get() + ".zip", WorkDir + "\\rom"))
+        my_thread(utils.zip_file(inputvar.get() + ".zip", WorkDir + "\\rom"))
         statusend()
         showinfo("压缩完成")
     else:
@@ -1275,8 +1263,8 @@ if __name__ == '__main__':
                 menu1.add_command(label=item, command=sys.exit)
         menuBar.add_cascade(label="菜单", menu=menu1)
         menu2 = tk.Menu(menuBar, tearoff=False)
-        menuItem = ["cosmo", "flatly", "journal", "literal", "lumen", "minty", "pulse", "sandstone", "united", "yeti",
-                    "cyborg", "darkly", "solar", "vapor", "superhero"]
+        menuItem = ['cosmo', 'flatly', 'journal', 'literal', 'lumen', 'minty', 'pulse', 'sandstone', 'united', 'yeti',
+                    'cyborg', 'darkly', 'solar', 'superhero']
         for item in menuItem:
             menu2.add_command(label=item, command=lambda n=item: change_theme(n))
         menuBar.add_cascade(label="主题", menu=menu2)
