@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from ast import Return
+
 from asyncio.windows_events import NULL
 import os
 import sys
@@ -8,24 +8,23 @@ import json
 import base64
 import shutil
 import subprocess
-# import tk/tcl
+
 import tkinter as tk
 from tkinter import ttk
 from tkinter.filedialog import *
 from tkinter import *
 from tkinter import scrolledtext
-from tkinter.simpledialog import askstring
-from ttkbootstrap import Style  # use ttkbootstrap theme
+
+from ttkbootstrap import Style
 from ttkbootstrap.constants import *
 from ttkbootstrap.scrolled import ScrolledFrame
-# from bs4 import BeautifulSoup
+
 import requests
-# using threading in some function
+
 import threading
 import time
 import webbrowser
 
-# import functions I modified
 import utils
 import sn
 import verifysn
@@ -684,6 +683,7 @@ def __xruncmd(event):
 
 # Parse Payload.bin add by azwhikaru 20220319
 def __parsePayload():
+    import bin.parsePayload
     fileChooseWindow("解析payload.bin")
     if os.access(filename.get(), os.F_OK):
         statusstart()
@@ -1043,8 +1043,7 @@ def __repackSparseImage():
     if WorkDir:
         # 只将 EXT 转为 SIMG 而不是重新打包一次
         fileChooseWindow("选择要转换为 SIMG 的 IMG 文件")
-        imgFilePath = filename.get()
-        if os.path.exists(imgFilePath) == False:
+        if not os.path.exists((imgFilePath := filename.get())):
             showinfo("文件不存在: " + imgFilePath)
         elif returnoutput("gettype -i " + imgFilePath).replace('\r\n', '') != "ext":
             showinfo("选中的文件并非 EXT 镜像，请先转换")
@@ -1075,7 +1074,7 @@ def __compressToBr():
     if WorkDir:
         fileChooseWindow("选择要转换为 BR 的 DAT 文件")
         imgFilePath = filename.get()
-        if os.path.exists(imgFilePath) == False:
+        if not os.path.exists(imgFilePath):
             showinfo("文件不存在: " + imgFilePath)
         elif returnoutput("gettype -i " + imgFilePath).replace('\r\n', '') != "dat":
             showinfo("选中的文件并非 DAT，请先转换")
@@ -1102,7 +1101,7 @@ def __repackDat():
         # TO-DO: 自动识别Android版本   20220331
         fileChooseWindow("选择要转换为 DAT 的 IMG 文件")
         imgFilePath = filename.get()
-        if os.path.exists(imgFilePath) == False:
+        if not os.path.exists(imgFilePath):
             showinfo("文件不存在: " + imgFilePath)
         elif returnoutput("gettype -i " + imgFilePath).replace('\r\n', '') != "sparse":
             showinfo("选中的文件并非 SPARSE，请先转换")
@@ -1117,7 +1116,7 @@ def __repackDat():
             elif inputVersion == 5.1:  # Android 5.1
                 showinfo("已选择: Android 5.1")
                 currentVersion = 2
-            elif inputVersion >= 6.0 and inputVersion < 7.0:  # Android 6.X
+            elif 6.0 <= inputVersion < 7.0:  # Android 6.X
                 showinfo("已选择: Android 6.X")
                 currentVersion = 3
             elif inputVersion >= 7.0:  # Android 7.0+
@@ -1211,14 +1210,14 @@ def __repackSuper():
             dirChooseWindow("选择super分区镜像文件所在目录")
             superdir = directoryname.get()
             showinfo("super分区镜像所在目录：" + superdir)
-            if sparse.get() == True:
+            if sparse.get():
                 showinfo("启用sparse参数")
             cmd = "lpmake "
             showinfo("打包类型 ： " + packtype.get())
             cmd += "--metadata-size 65536 --super-name super "
             if packtype.get() == 'VAB':
                 cmd += "--virtual-ab "
-            if sparse.get() == True:
+            if sparse.get():
                 cmd += "--sparse "
             cmd += "--metadata-slots 2 "
             cmd += "--device super:%s " % (packsize.get())
@@ -1231,10 +1230,6 @@ def __repackSuper():
 def repackSuper():
     th = threading.Thread(target=__repackSuper)
     th.start()
-
-
-def Test():
-    showinfo("Test function")
 
 
 if __name__ == '__main__':
