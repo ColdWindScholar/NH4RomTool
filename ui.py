@@ -687,13 +687,12 @@ def __parsePayload():
     fileChooseWindow("解析payload.bin")
     if os.access(filename.get(), os.F_OK):
         statusstart()
-        data = returnoutput("bin/parsePayload.exe " + filename.get())
-        datadict = dict(json.loads(data.replace("\'", "\"")))
+        data = bin.parsePayload.main(filename.get())
         showinfo("PAYLOAD文件解析结果如下")
-        showinfo("        文件 HASH 值 : %s" % (utils.bytesToHexString(base64.b64decode(datadict["FILE_HASH"]))))
-        showinfo("        文件大小     : %s" % (datadict["FILE_SIZE"]))
-        showinfo("        METADATA HASH: %s" % (utils.bytesToHexString(base64.b64decode(datadict["METADATA_HASH"]))))
-        showinfo("        METADATA 大小: %s" % (datadict["METADATA_SIZE"]))
+        showinfo("        文件 HASH 值 : %s" % (utils.bytesToHexString(base64.b64decode(data["FILE_HASH"]))))
+        showinfo("        文件大小     : %s" % (data["FILE_SIZE"]))
+        showinfo("        METADATA HASH: %s" % (utils.bytesToHexString(base64.b64decode(data["METADATA_HASH"]))))
+        showinfo("        METADATA 大小: %s" % (data["METADATA_SIZE"]))
         showinfo("  注: HASH值类型为SHA256")
         statusend()
     else:
