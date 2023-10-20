@@ -58,4 +58,3 @@ if __name__ == '__main__':
     other_param['METADATA_HASH'] = meta_hash
     other_param['METADATA_SIZE'] = str(manifest_size + 24)
     print(other_param)
-# okay decompiling /cygdrive/c/Users/16612/Desktop/parsePayload.exe_extracted/parse_payload.pyc
